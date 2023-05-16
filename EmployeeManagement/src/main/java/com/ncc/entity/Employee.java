@@ -19,6 +19,8 @@ public class Employee {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "employee_code", unique = true, nullable = false, length = 4)
+    private int employeeCode;
     @Column(name = "checkin", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
