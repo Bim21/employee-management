@@ -20,5 +20,5 @@ public interface IEmployeeService {
 
     Employee findByname(String name);
 
-
+    void saveUser(List<Employee> employees);
 }

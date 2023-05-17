@@ -1,11 +1,17 @@
 package com.ncc.service;
 
 import com.ncc.entity.Employee;
+import com.ncc.repository.IEmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class EmployeeService implements IEmployeeService{
+    @Autowired
+    private IEmployeeRepository employeeRepository;
     @Override
     public Page<Employee> getAllEmployee() {
         return null;
@@ -39,5 +45,10 @@ public class EmployeeService implements IEmployeeService{
     @Override
     public Employee findByname(String name) {
         return null;
+    }
+
+    @Override
+    public void saveUser(List<Employee> employees) {
+        employeeRepository.saveAll(employees);
     }
 }

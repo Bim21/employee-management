@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
@@ -43,8 +44,7 @@ public class User {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role;
-//
-//    @Column(name = "start_date")
-//    private LocalDate startDate;
+    @ColumnDefault("'EMPLOYEE'")
+    private Role role = Role.EMPLOYEE;
+
 }
