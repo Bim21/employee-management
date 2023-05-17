@@ -30,4 +30,10 @@ public class RegistrationUserToken {
     @Temporal(TemporalType.TIMESTAMP)
     private Date expiryDate;
 
+    public RegistrationUserToken(String token, User user) {
+        this.token = token;
+        this.user = user;
+
+        expiryDate = new Date(System.currentTimeMillis() + 360000);
+    }
 }

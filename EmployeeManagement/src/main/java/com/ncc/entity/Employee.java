@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -23,20 +24,20 @@ public class Employee {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     @Column(name = "employee_code", unique = true, nullable = false, length = 4)
     private int employeeCode;
     @Column(name = "checkin", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate checkInTime;
+    private Date checkInTime;
 
     @Column(name = "checkout", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate checkOutTime;
+    private Date checkOutTime;
 
 }
