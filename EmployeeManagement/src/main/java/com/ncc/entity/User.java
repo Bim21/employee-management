@@ -23,11 +23,11 @@ public class User {
     @Column(name = "id", nullable = false)
     private int id;
 
-//    @Column(name = "username", length = 50, unique = true)
-//    private String userName;
+    @Column(name = "username", length = 50, unique = true, nullable = false)
+    private String userName;
 
-//    @Column(name = "password", length = 800, unique = true)
-//    private String passWord;
+    @Column(name = "password", length = 800, unique = true, nullable = false)
+    private String passWord;
     @Column(name = "firstName", length = 50, nullable = false)
     @JsonProperty("firstName")
     private String firstName;
@@ -44,7 +44,6 @@ public class User {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("'EMPLOYEE'")
-    private Role role = Role.EMPLOYEE;
+    private Role role;
 
 }

@@ -1,32 +1,30 @@
 package com.ncc.service;
 
-import com.ncc.entity.RegistrationUserToken;
 import com.ncc.entity.User;
 import com.ncc.repository.IUserRepository;
-import com.ncc.repository.RegistrationUserTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
     @Autowired
     private IUserRepository userRepository;
-//    @Autowired
-//    private RegistrationUserTokenRepository registrationUserTokenRepository;
+
+    @Autowired
+    IEmailService emailService;
 
     @Override
     public void createUser(User user) {
         userRepository.save(user);
 
-    }
-
-    private void createNewRegistrationUserToken(User user) {
-//        final String newToken = UUID.randomUUID().toString();
-//        RegistrationUserToken token = new RegistrationUserToken(newToken, user);
-
+        String to = user.getEmail();
+        String subject = "Thong bao tao moi user";
+        String content = "Chao" + user.getFullName() + ", \n\n"
+                + "Chúng tôi xin thông báo rằng bạn đã được tạo mới thành công trong hệ thống.\n"
+                + "Vui lòng liên hệ với quản lý để biết thêm thông tin chi tiết.\n\n"
+                + "Trân trọng,\n"
+                + "Ban quản lý nhân sự";
+        emailService.sendEmail(to, subject, content);
     }
 
     @Override
@@ -34,33 +32,25 @@ public class UserService implements IUserService {
         return null;
     }
 
-//    @Override
-//    public User findUserByUserName(String userName) {
-//        return null;
-//    }
+    @Override
+    public User findUserByUserName(String userName) {
+        return null;
+    }
 
     @Override
     public void activeUser(String token) {
 
     }
 
-    @Override
-    public void sendConfirmUserRegistrationViaEmail(String email) {
-
-    }
 
     @Override
     public boolean existsUserByEmail(String email) {
         return false;
     }
 
-//    @Override
-//    public boolean existsUserByUserName(String userName) {
-//        return false;
-//    }
-
     @Override
-    public void saveUser(List<User> users) {
-        userRepository.saveAll(users);
+    public boolean existsUserByUserName(String userName) {
+        return false;
     }
+
 }

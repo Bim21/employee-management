@@ -41,7 +41,7 @@ public class Employee {
     private String email;
 
     @Column(name = "employee_code", unique = true, nullable = false, length = 4)
-    private int employeeCode;
+    private String employeeCode;
 
     @Column(name = "checkin", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -52,6 +52,11 @@ public class Employee {
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date checkOutTime;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'EMPLOYEE'")
+    private Role role = Role.EMPLOYEE;
 
     @Column(name = "start_date")
     private LocalDate startDate;

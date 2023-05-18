@@ -9,15 +9,12 @@ public interface IUserService {
 
     User findUserByEmail(String email);
 
-//    User findUserByUserName(String userName);
+    User findUserByUserName(String userName);
 
     void activeUser(String token);
 
-    void sendConfirmUserRegistrationViaEmail(String email);
-
     boolean existsUserByEmail(String email);
 
-//    boolean existsUserByUserName(String userName);
+    boolean existsUserByUserName(String userName);
 
-    void saveUser(List<User> users);
 }

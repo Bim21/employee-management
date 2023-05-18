@@ -1,6 +1,8 @@
 package com.ncc.service;
 
 import com.ncc.entity.Employee;
+import com.ncc.form.EmployeeCreateForm;
+import com.ncc.form.EmployeeUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,11 +12,11 @@ public interface IEmployeeService {
     Page<Employee> getAllEmployee();
 
     Employee findById(int id);
-    void createEmployee();
+    void createEmployee(EmployeeCreateForm form);
 
-    void updateEmployee(int id);
+    void updateEmployee(EmployeeUpdateForm form);
 
-    void deleteEmployees(List<Integer> ids );
+    void deleteEmployeeById(int id);
 
     boolean existsById(int id);
 
