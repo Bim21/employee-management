@@ -58,6 +58,4 @@ public class Employee {
     @ColumnDefault("'EMPLOYEE'")
     private Role role = Role.EMPLOYEE;
 
-    @Column(name = "start_date")
-    private LocalDate startDate;
 }
