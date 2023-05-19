@@ -40,8 +40,8 @@ public class Employee {
     @JsonProperty("email")
     private String email;
 
-    @Column(name = "employee_code", unique = true, nullable = false, length = 4)
-    private String employeeCode;
+    @Column(name = "check_in_code", unique = true, nullable = false)
+    private Integer checkInCode;
 
     @Column(name = "checkin", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

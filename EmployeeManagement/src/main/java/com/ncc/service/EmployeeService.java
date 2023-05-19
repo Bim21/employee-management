@@ -1,6 +1,5 @@
 package com.ncc.service;
 
-import com.ncc.dto.EmployeeCheckinInfoDTO;
 import com.ncc.entity.Employee;
 import com.ncc.form.EmployeeCreateForm;
 import com.ncc.form.EmployeeUpdateForm;
@@ -10,20 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Random;
 
 @Service
-public class EmployeeService implements IEmployeeService{
+public class EmployeeService implements IEmployeeService {
     @Autowired
     private IEmployeeRepository employeeRepository;
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public Page<Employee> getAllEmployee() {
         return null;
@@ -39,7 +38,7 @@ public class EmployeeService implements IEmployeeService{
         Employee employee = mapper.map(form, Employee.class);
 
         String checkinCode = generateCheckinCode();
-        employee.setEmployeeCode(checkinCode);
+        employee.setCheckInCode(Integer.valueOf(checkinCode));
 
         employeeRepository.save(employee);
     }
@@ -60,8 +59,8 @@ public class EmployeeService implements IEmployeeService{
     }
 
     @Override
-    public Employee findByname(String name) {
-        return employeeRepository.findByName(name);
+    public Employee findByLastName(String lastName) {
+        return employeeRepository.findByLastName(lastName);
     }
 
     @Override
@@ -69,32 +68,7 @@ public class EmployeeService implements IEmployeeService{
         employeeRepository.saveAll(employees);
     }
 
-    @Override
-    public List<EmployeeCheckinInfoDTO> getEmployeesCheckinInfoRange(LocalDateTime startDate, LocalDateTime endDate) {
-        if(startDate == null){
-            startDate = LocalDateTime.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        }
-        if(endDate == null){
-            endDate = LocalDateTime.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
-
-        }
-
-        List<EmployeeCheckinInfoDTO> employeeCheckinInfoDTOList = employeeRepository.getEmployeeCheckinInfoInRange(startDate, endDate);
-        return  employeeCheckinInfoDTOList;
-    }
-
-    @Override
-    public List<EmployeeCheckinInfoDTO> getEmployeesWithCheckinErrors() {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate endOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
-        LocalDateTime endDate = endOfMonth.atStartOfDay();
-
-        List<Employee> employeesWithCheckinErrors = employeeRepository.getEmployeesWithCheckinErrors(endOfMonth, endDate);
-        return null;
-    }
-
-
-    private String generateCheckinCode(){
+    private String generateCheckinCode() {
         Random random = new Random();
         int code = random.nextInt(9000) + 1000;
         return String.valueOf(code);

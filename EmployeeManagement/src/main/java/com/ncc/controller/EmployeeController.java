@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ncc.dto.EmployeeCheckinInfoDTO;
 import com.ncc.entity.Employee;
 import com.ncc.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -34,7 +31,7 @@ public class EmployeeController {
 
     @Value("${hrm.api.url}")
     private String hrmApiUrl;
-    @GetMapping(value = "employee")
+    @GetMapping(value = "/employee")
     public ResponseEntity<?> getAndSaveListUser() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         String fooResourceUrl = hrmApiUrl;
@@ -53,21 +50,6 @@ public class EmployeeController {
 
         String successMessage = messageSource.getMessage("save.success", null, Locale.getDefault());
         return new ResponseEntity<>(successMessage, HttpStatus.OK);
-    }
-
-    @GetMapping("/checkin-info")
-    public List<EmployeeCheckinInfoDTO> getEmployeeCheckinInfoInRange
-            (@RequestParam(required = false) LocalDate startDate,
-             @RequestParam(required = false) LocalDate endDate){
-        List<EmployeeCheckinInfoDTO> employeeCheckinInfoDTOList = employeeService.getEmployeesCheckinInfoRange(startDate.atStartOfDay(), endDate.atStartOfDay());
-        return employeeCheckinInfoDTOList;
-    }
-
-    @GetMapping("/checkin-errors")
-    public List<EmployeeCheckinInfoDTO> getEmployeesWithCheckinErrors(){
-        List<EmployeeCheckinInfoDTO> employeesWithCheckinErrors = employeeService.getEmployeesWithCheckinErrors();
-
-        return employeesWithCheckinErrors;
     }
 
 }
