@@ -18,7 +18,7 @@ public class InternationalizationConfiguration implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
-        resolver.setDefaultLocale(new Locale("vi", "VN"));
+        resolver.setDefaultLocale(new Locale("en", "US"));
         return resolver;
     }
 
@@ -37,6 +37,7 @@ public class InternationalizationConfiguration implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setDefaultLocale(Locale.US);
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;

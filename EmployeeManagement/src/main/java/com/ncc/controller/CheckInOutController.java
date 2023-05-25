@@ -13,6 +13,6 @@ public class CheckInOutController {
 
     @PostMapping("/checkin")
     public void checkIn(@RequestBody CheckInOutRequest request){
-        checkInOutService.checkIn(request.getId());
+
     }
 }

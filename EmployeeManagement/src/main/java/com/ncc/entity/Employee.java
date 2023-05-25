@@ -40,15 +40,15 @@ public class Employee {
     @JsonProperty("email")
     private String email;
 
-    @Column(name = "check_in_code", unique = true, nullable = false)
+    @Column(name = "check_in_code", unique = true)
     private Integer checkInCode;
 
-    @Column(name = "checkin", nullable = false)
+    @Column(name = "checkin")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date checkInTime;
 
-    @Column(name = "checkout", nullable = false)
+    @Column(name = "checkout")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date checkOutTime;

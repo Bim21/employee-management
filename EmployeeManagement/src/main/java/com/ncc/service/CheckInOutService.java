@@ -16,25 +16,19 @@ public class CheckInOutService implements ICheckInOutService{
     @Autowired
     private IEmployeeRepository employeeRepository;
 
+
     @Override
-    public void checkIn(int id) {
-        // Lấy thng tin nhân viên từ bảng employee
-        Employee employee = employeeRepository.findById(id).orElse(null);
+    public void checkIn(String checkInCode, Employee employee) {
 
-        if(employee != null){
-            //Lấy mã check-in từ nhân viên
-            int checkInCode = employee.getCheckInCode();
+    }
 
-            // Thực hiện quá trình check-in và lưu vào bảng check_in_out
-            CheckInOut checkInOut = new CheckInOut();
-            checkInOut.setEmployee(employee);
-            checkInOut.setCheckInCode(checkInCode);
-            checkInOut.setCheckInTime(new Date());
+    @Override
+    public void checkOut(String checkInCode, Employee employee) {
 
-            checkInOutRepository.save(checkInOut);
+    }
 
-        } else {
-            throw new EmployeeNotFoundException("Không tìm thấy nhân viên với ID cung cấp: " + id);
-        }
+    private boolean isCheckInCodeValid(String checkInCode, Employee employee){
+
+        return true;
     }
 }

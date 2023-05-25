@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/v1/users")
+@RequestMapping(value = "/users")
 public class UserController {
     @Autowired
     private IUserService userService;
