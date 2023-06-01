@@ -2,11 +2,14 @@ package com.ncc.service;
 
 import com.ncc.entity.Employee;
 import com.ncc.form.EmployeeCreateForm;
+import com.ncc.form.EmployeeFilterForm;
 import com.ncc.form.EmployeeUpdateForm;
 import com.ncc.repository.IEmployeeRepository;
+import com.ncc.specification.EmployeeSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +17,14 @@ import java.util.Random;
 
 @Service
 public class EmployeeService implements IEmployeeService {
+
+    private final IEmployeeRepository employeeRepository;
+
     @Autowired
-    private IEmployeeRepository employeeRepository;
+    public EmployeeService(IEmployeeRepository employeeRepository) {
+        super();
+        this.employeeRepository = employeeRepository;
+    }
 
     @Autowired
     private ModelMapper mapper;
@@ -23,9 +32,10 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     private EmailService emailService;
 
+
     @Override
-    public Page<Employee> getAllEmployee() {
-        return null;
+    public Page<Employee> getAllEmployee(Pageable pageable, EmployeeFilterForm form) {
+        return employeeRepository.findAll(EmployeeSpecification.buildWhere(form), pageable);
     }
 
     @Override
@@ -73,4 +83,5 @@ public class EmployeeService implements IEmployeeService {
         int code = random.nextInt(9000) + 1000;
         return String.valueOf(code);
     }
+
 }

@@ -1,10 +1,16 @@
 package com.ncc.form;
 
 import com.ncc.entity.Role;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserUpdateForm {
-    private Integer id;
 
+    private Integer id;
     private String userName;
     private String passWord;
     private String firstName;

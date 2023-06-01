@@ -43,19 +43,11 @@ public class Employee {
     @Column(name = "check_in_code", unique = true)
     private Integer checkInCode;
 
-    @Column(name = "checkin")
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date checkInTime;
-
-    @Column(name = "checkout")
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date checkOutTime;
-
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'EMPLOYEE'")
     private Role role = Role.EMPLOYEE;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Company company;
 }

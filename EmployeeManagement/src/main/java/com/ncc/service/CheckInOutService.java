@@ -28,7 +28,6 @@ public class CheckInOutService implements ICheckInOutService{
     }
 
     private boolean isCheckInCodeValid(String checkInCode, Employee employee){
-
         return true;
     }
 }

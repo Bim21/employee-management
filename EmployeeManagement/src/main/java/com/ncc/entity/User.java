@@ -26,7 +26,7 @@ public class User {
     @Column(name = "username", length = 50, unique = true, nullable = false)
     private String userName;
 
-    @Column(name = "password", length = 500, unique = true, nullable = false)
+    @Column(name = "password", length = 500, nullable = false)
     private String passWord;
     @Column(name = "firstName", length = 50, nullable = false)
     @JsonProperty("firstName")
