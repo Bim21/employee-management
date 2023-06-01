@@ -1,10 +1,22 @@
 package com.ncc.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
+import java.util.Date;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -12,21 +24,38 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
-    @Column(name = "name", length = 50, nullable = false)
-    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "firstName", length = 50, nullable = false)
+    @JsonProperty("firstName")
+    private String firstName;
 
-    @Column(name = "checkin", nullable = false)
+    @Column(name = "lastName", length = 50, nullable = false)
+    @JsonProperty("lastName")
+    private String lastName;
+
+    @Formula("concat(firstName, ' ', lastName)")
+    private String fullName;
+
+    @Column(name = "email", length = 100, nullable = false)
+    @JsonProperty("email")
+    private String email;
+
+    @Column(name = "check_in_code", unique = true)
+    private Integer checkInCode;
+
+    @Column(name = "checkin")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate checkInTime;
+    private Date checkInTime;
 
-    @Column(name = "checkout", nullable = false)
+    @Column(name = "checkout")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate checkOutTime;
+    private Date checkOutTime;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'EMPLOYEE'")
+    private Role role = Role.EMPLOYEE;
 
 }
