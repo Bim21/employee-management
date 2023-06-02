@@ -1,17 +1,5 @@
 package com.ncc.service;
 
-<<<<<<< HEAD
-public class EmailService implements IEmailService{
-    @Override
-    public void sendRegistrationUserConfirm(String email) {
-
-    }
-
-    @Override
-    public void sendResetPassword(String email) {
-
-    }
-=======
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,6 +12,16 @@ public class EmailService implements IEmailService {
     private JavaMailSender mailSender;
 
     @Override
+    public void sendRegistrationUserConfirm(String email) {
+
+    }
+
+    @Override
+    public void sendResetPassword(String email) {
+
+    }
+
+    @Override
     public void sendEmail(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
@@ -32,5 +30,4 @@ public class EmailService implements IEmailService {
         mailSender.send(message);
     }
 
->>>>>>> 6a06570c2a08b7267a1bf4bef7c9b7abd3d36271
 }
