@@ -8,11 +8,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
-public interface IUserService {
+public interface IUserService extends UserDetailsService{
 
     void createUser(UserCreateForm form);
 
-    UserDetails loadByUsername(String userName) throws UsernameNotFoundException;
+    @Override
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
     User findUserByEmail(String email);
 
     User findUserByUserName(String userName);

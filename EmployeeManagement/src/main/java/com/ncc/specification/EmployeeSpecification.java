@@ -24,4 +24,5 @@ public class EmployeeSpecification {
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), "%" + value.toLowerCase() + "%"));
     }
 
+
 }

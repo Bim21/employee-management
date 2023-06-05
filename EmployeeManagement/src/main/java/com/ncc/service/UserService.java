@@ -49,11 +49,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDetails loadByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(userName);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUserName(username);
         if(user == null){
-            System.out.println("User not found!" + userName);
-            throw new UsernameNotFoundException("User" + userName + "was not found in the database");
+            System.out.println("User not found!" + username);
+            throw new UsernameNotFoundException("User" + username + "was not found in the database");
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getUserName(),
