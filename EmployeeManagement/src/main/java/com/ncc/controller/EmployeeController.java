@@ -4,35 +4,39 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ncc.dto.EmployeeDTO;
 import com.ncc.entity.Employee;
-import com.ncc.entity.User;
 import com.ncc.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("/api/v1/employees")
+@RequestMapping("/employees")
 public class EmployeeController {
+    private final IEmployeeService employeeService;
+
     @Autowired
-    private IEmployeeService employeeService;
+    public EmployeeController(IEmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @Autowired
     private MessageSource messageSource;
 
     @Value("${hrm.api.url}")
     private String hrmApiUrl;
-    @GetMapping(value = "employee")
+    @GetMapping(value = "/employee")
     public ResponseEntity<?> getAndSaveListUser() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         String fooResourceUrl = hrmApiUrl;
@@ -46,11 +50,42 @@ public class EmployeeController {
             System.out.println(employee);
         }
 
-
         employeeService.saveUser(employees);
 
         String successMessage = messageSource.getMessage("save.success", null, Locale.getDefault());
         return new ResponseEntity<>(successMessage, HttpStatus.OK);
     }
 
+    @PostMapping
+    public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.createEmployee(employeeDTO);
+    }
+
+
+    @PutMapping("/{id}")
+    public EmployeeDTO updateEmployee(@PathVariable("id") int id, @RequestBody EmployeeDTO employeeDTO){
+        employeeDTO.setId(id);
+        return employeeService.updateEmployee(employeeDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEmployeById(@PathVariable int id){
+        employeeService.deleteEmployeeById(id);
+    }
+
+    @GetMapping("/search")
+    public List<EmployeeDTO> searchEmployeesByName(@RequestParam("keyword") String keyword) {
+        return employeeService.searchEmployeesByName(keyword);
+    }
+
+    @GetMapping("/checkin-records")
+    public List<EmployeeDTO> getAllEmployeesWithCheckinCheckoutRecords(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                       @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return employeeService.getAllEmployeesWithCheckinCheckoutRecords(startDate, endDate);
+    }
+
+    @GetMapping("/checkin-errors")
+    public List<EmployeeDTO> getEmployeesWithCheckinErrorsInMonth(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return employeeService.getEmployeesWithCheckinErrorsInMonth(date);
+    }
 }

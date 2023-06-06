@@ -1,26 +1,30 @@
 package com.ncc.service;
 
+import com.ncc.dto.EmployeeDTO;
 import com.ncc.entity.Employee;
-import com.ncc.form.EmployeeCreateForm;
-import com.ncc.form.EmployeeUpdateForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IEmployeeService {
     Page<Employee> getAllEmployee();
 
     Employee findById(int id);
-    void createEmployee(EmployeeCreateForm form);
 
-    void updateEmployee(EmployeeUpdateForm form);
+    EmployeeDTO createEmployee(EmployeeDTO employeeDTO);
+
+    EmployeeDTO updateEmployee(EmployeeDTO employeeDTO);
 
     void deleteEmployeeById(int id);
 
-    boolean existsById(int id);
+    List<EmployeeDTO > getAllEmployeesWithCheckinCheckoutRecords(LocalDate startDate, LocalDate endDate);
+    List<EmployeeDTO> getEmployeesWithCheckinErrorsInMonth(LocalDate date);
 
-    Employee findByname(String name);
+    List<EmployeeDTO> searchEmployeeByName(String keyword);
 
     void saveUser(List<Employee> employees);
+
+    List<EmployeeDTO> searchEmployeesByName(String keyword);
 }

@@ -1,9 +1,7 @@
 package com.ncc.configuration.i18n;
 
-import org.hibernate.Session;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,12 +11,11 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
-@Configuration
-public class InternationalizationConfiguration implements WebMvcConfigurer {
+public class InternationalizationConfig implements WebMvcConfigurer{
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
-        resolver.setDefaultLocale(new Locale("vi", "VN"));
+        resolver.setDefaultLocale(new Locale("en", "US"));
         return resolver;
     }
 
@@ -37,6 +34,7 @@ public class InternationalizationConfiguration implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setDefaultLocale(Locale.US);
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;

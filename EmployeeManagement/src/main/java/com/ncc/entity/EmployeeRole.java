@@ -11,14 +11,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "role")
-public class Role {
+@Table(name = "emoloyee_role")
+public class EmployeeRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
+    @Column(name = "id")
     private int id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role_name")
-    private ERole roleName;
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 }

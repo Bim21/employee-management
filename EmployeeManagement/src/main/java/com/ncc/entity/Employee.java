@@ -12,6 +12,7 @@ import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,28 +37,22 @@ public class Employee {
     @Formula("concat(firstName, ' ', lastName)")
     private String fullName;
 
+    @Column(name = "username")
+    private String userName;
+
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "email", length = 100, nullable = false)
     @JsonProperty("email")
     private String email;
 
-    @Column(name = "employee_code", unique = true, nullable = false, length = 4)
-    private String employeeCode;
+    @Column(name = "check_in_code", unique = true)
+    private Integer checkInCode;
 
-    @Column(name = "checkin", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date checkInTime;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<CheckInOut> checkInOuts;
 
-    @Column(name = "checkout", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date checkOutTime;
-
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    @ColumnDefault("'EMPLOYEE'")
-    private Role role = Role.EMPLOYEE;
-
-    @Column(name = "start_date")
-    private LocalDate startDate;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<EmployeeRole> employeeRoles;
 }

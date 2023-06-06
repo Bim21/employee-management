@@ -2,11 +2,16 @@ package com.ncc.repository;
 
 import com.ncc.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
-    public Employee findByName(String name);
+import java.util.List;
 
-    public boolean existsByName(String name);
+public interface IEmployeeRepository extends JpaRepository<Employee, Integer>, JpaSpecificationExecutor<Employee> {
+    public Employee findByUserName(String userName);
 
-    public void deleteById(int id);
+    public boolean existsByUserName(String userName);
+
+    public boolean existsByEmail(String email);
+
+    List<Employee> findByUsernameContainingIgnoreCase(String keyword);
 }
