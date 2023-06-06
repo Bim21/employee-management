@@ -1,6 +1,6 @@
 package com.ncc.security;
 
-import com.ncc.utils.JwtRequestFilter;
+import com.ncc.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
