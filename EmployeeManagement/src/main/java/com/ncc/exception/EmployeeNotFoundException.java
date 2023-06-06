@@ -1,7 +1,7 @@
-package com.ncc.service;
+package com.ncc.exception;
 
 public class EmployeeNotFoundException extends RuntimeException {
-    public EmployeeNotFoundException(String message){
+    public EmployeeNotFoundException(String message) {
         super(message);
     }
 }
