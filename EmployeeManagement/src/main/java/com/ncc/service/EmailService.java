@@ -1,7 +1,10 @@
 package com.ncc.service;
 
+<<<<<<< HEAD
 import com.ncc.constants.MessageConstant;
 import com.ncc.dto.MailDTO;
+=======
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,4 +37,5 @@ public class EmailService implements IEmailService {
     public String sendEmailWithHTML(MailDTO mailDTO, String templateName) {
         return null;
     }
+
 }

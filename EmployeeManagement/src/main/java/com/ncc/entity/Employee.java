@@ -50,9 +50,27 @@ public class Employee {
     @Column(name = "check_in_code", unique = true)
     private Integer checkInCode;
 
+<<<<<<< HEAD
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<CheckInOut> checkInOuts;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<EmployeeRole> employeeRoles;
+=======
+    @Column(name = "checkin")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date checkInTime;
+
+    @Column(name = "checkout")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date checkOutTime;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'EMPLOYEE'")
+    private Role role = Role.EMPLOYEE;
+
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
 }

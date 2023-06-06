@@ -6,6 +6,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ncc.dto.EmployeeDTO;
 import com.ncc.entity.Employee;
+<<<<<<< HEAD
+=======
+import com.ncc.form.EmployeeCreateForm;
+import com.ncc.form.EmployeeUpdateForm;
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
 import com.ncc.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,6 +62,7 @@ public class EmployeeController {
     }
 
     @PostMapping
+<<<<<<< HEAD
     public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return employeeService.createEmployee(employeeDTO);
     }
@@ -66,12 +72,23 @@ public class EmployeeController {
     public EmployeeDTO updateEmployee(@PathVariable("id") int id, @RequestBody EmployeeDTO employeeDTO){
         employeeDTO.setId(id);
         return employeeService.updateEmployee(employeeDTO);
+=======
+    public void createEmployee(@RequestBody EmployeeCreateForm form){
+        employeeService.createEmployee(form);
+    }
+
+    @PutMapping("/{id}")
+    public void updateEmployee(@PathVariable("id") int id, @RequestBody EmployeeUpdateForm form){
+        form.setId(id);
+        employeeService.updateEmployee(form);
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
     }
 
     @DeleteMapping("/{id}")
     public void deleteEmployeById(@PathVariable int id){
         employeeService.deleteEmployeeById(id);
     }
+<<<<<<< HEAD
 
     @GetMapping("/search")
     public List<EmployeeDTO> searchEmployeesByName(@RequestParam("keyword") String keyword) {
@@ -88,4 +105,6 @@ public class EmployeeController {
     public List<EmployeeDTO> getEmployeesWithCheckinErrorsInMonth(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return employeeService.getEmployeesWithCheckinErrorsInMonth(date);
     }
+=======
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
 }

@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
+<<<<<<< HEAD
 public class EmployeeService implements IEmployeeService{
     private final IEmployeeRepository employeeRepository;
     private final ICheckInOutRepository checkInOutRepository;
@@ -34,6 +35,18 @@ public class EmployeeService implements IEmployeeService{
         this.emailService = emailService;
     }
 
+=======
+public class EmployeeService implements IEmployeeService {
+    @Autowired
+    private IEmployeeRepository employeeRepository;
+
+    @Autowired
+    private ModelMapper mapper;
+
+    @Autowired
+    private EmailService emailService;
+
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
     @Override
     public Page<Employee> getAllEmployee() {
         return null;
@@ -47,12 +60,18 @@ public class EmployeeService implements IEmployeeService{
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
         String checkinCode = generateCheckinCode();
+<<<<<<< HEAD
         Employee employee = mapper.map(employeeDTO, Employee.class);
         employee.setCheckInCode(Integer.valueOf(checkinCode));
         Employee saveEmployee =  employeeRepository.save(employee);
         EmployeeDTO saveEmployeeDTO = mapper.map(saveEmployee, EmployeeDTO.class);
         emailService.sendEmail(new MailDTO());
         return saveEmployeeDTO;
+=======
+        employee.setCheckInCode(Integer.valueOf(checkinCode));
+
+        employeeRepository.save(employee);
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
     }
 
     @Override
@@ -97,6 +116,7 @@ public class EmployeeService implements IEmployeeService{
     }
 
     @Override
+<<<<<<< HEAD
     public List<EmployeeDTO> getEmployeesWithCheckinErrorsInMonth(LocalDate date) {
         List<Employee> employees = employeeRepository.findAll();
         return employees.stream()
@@ -110,6 +130,10 @@ public class EmployeeService implements IEmployeeService{
                     return employeeDTO;
                 })
                 .collect(Collectors.toList());
+=======
+    public Employee findByLastName(String lastName) {
+        return employeeRepository.findByLastName(lastName);
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
     }
 
     @Override
@@ -126,6 +150,7 @@ public class EmployeeService implements IEmployeeService{
         employeeRepository.saveAll(employees);
     }
 
+<<<<<<< HEAD
     @Override
     public List<EmployeeDTO> searchEmployeesByName(String keyword) {
         List<Employee> employees = employeeRepository.findByUsernameContainingIgnoreCase(keyword);
@@ -134,6 +159,8 @@ public class EmployeeService implements IEmployeeService{
                 .collect(Collectors.toList());
     }
 
+=======
+>>>>>>> a6e0e48575538adf49a80e58ef09647b5a4b563b
     private String generateCheckinCode() {
         Random random = new Random();
         int code = random.nextInt(9000) + 1000;
