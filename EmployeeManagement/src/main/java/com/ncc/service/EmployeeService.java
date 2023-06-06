@@ -27,6 +27,7 @@ public class EmployeeService implements IEmployeeService{
     private final ModelMapper mapper;
     private final EmailService emailService;
 
+    @Autowired
     public EmployeeService(IEmployeeRepository employeeRepository, ICheckInOutRepository checkInOutRepository, ModelMapper mapper, EmailService emailService) {
         this.employeeRepository = employeeRepository;
         this.checkInOutRepository = checkInOutRepository;
@@ -113,7 +114,7 @@ public class EmployeeService implements IEmployeeService{
     }
 
     @Override
-    public List<EmployeeDTO> searchEmployeeByName(String keyword) {
+    public List<EmployeeDTO> searchEmployeesByName(String keyword) {
         List<Employee> employees = employeeRepository.findByUsernameContainingIgnoreCase(keyword);
         return employees.stream()
                 .map(employee -> mapper.map(employee, EmployeeDTO.class))
@@ -124,14 +125,6 @@ public class EmployeeService implements IEmployeeService{
     @Override
     public void saveUser(List<Employee> employees) {
         employeeRepository.saveAll(employees);
-    }
-
-    @Override
-    public List<EmployeeDTO> searchEmployeesByName(String keyword) {
-        List<Employee> employees = employeeRepository.findByUsernameContainingIgnoreCase(keyword);
-        return employees.stream()
-                .map(employee -> mapper.map(employee, EmployeeDTO.class))
-                .collect(Collectors.toList());
     }
 
     private String generateCheckinCode() {

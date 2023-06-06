@@ -1,81 +1,58 @@
 package com.ncc.utils;
 
+import com.ncc.security.UserDetailsImpl;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+
 
 @Component
+@Slf4j
 public class JwtUtils {
-    private static Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    private String SECRET_KEY = "secret";
-    private static final long JWT_TOKEN_VALIDITY = 60 * 60;
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    // lấy tên người dùng từ mã thông báo jwt
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    @org.springframework.beans.factory.annotation.Value("${bezkoder.app.jwtSecret}")
+    private String jwtSecret;
+
+    @org.springframework.beans.factory.annotation.Value("${bezkoder.app.jwtExpirationMs}")
+    private int jwtExpirationMs;
+
+    public String generateJwtToken(Authentication authentication) {
+
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+
+        return Jwts.builder()
+                .setSubject(userPrincipal.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
-    // lấy ngày hết hạn từ mã thông báo jwt
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    public String getUserNameFromJwtToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = exstractAllClaims(token);
+    public boolean validateJwtToken(String authToken) {
         try {
-            return claimsResolver.apply(claims);
-        } catch (Exception e) {
-            logger.error(e.getMessage() + ": ExpiredJwtException");
-            return null;
-        }
-    }
-
-    // Khi muốn lấy bất kì thông tin gì ta cần 1 khóa bí mật
-    private Claims exstractAllClaims(String token) {
-        try {
-            return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-
-        } catch (ExpiredJwtException e) {
-            logger.error(e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            logger.error(e.getMessage());
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException e) {
+            logger.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
-            logger.error(e.getMessage());
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            logger.error(e.getMessage());
+            logger.error("JWT claims string is empty: {}", e.getMessage());
         }
-        return null;
-    }
-    //Kiểm tra xem mã thông báo đã hết hạn hay chưa
-    private Boolean isTokenExpired(String token){
-        return extractExpiration(token).before(new Date());
-    }
 
-    //tạo token cho người dùng
-    private String generateToken(UserDetails userDetails){
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        return false;
     }
-
-    private String createToken(Map<String, Object> claims, String subject){
-
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 10000 * JWT_TOKEN_VALIDITY))
-                .setIssuer("Creator")
-                .setHeaderParam("tokenType", "Bearer")
-                .setAudience("You")
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
-    }
-
-    public Boolean validateToken(String token, UserDetails userDetails){
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
-
 }
